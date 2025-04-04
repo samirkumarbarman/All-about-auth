@@ -1,0 +1,17 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "backend of all about auth project",
+  "main": "server.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Samir Kumar Barman",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.13.2"
+  }
+}
