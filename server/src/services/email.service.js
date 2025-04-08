@@ -26,3 +26,19 @@ export const sendverificationEmail = async (user) => {
         throw new Error('Failed to send verification email');
     }
 };
+
+export const sendResetEmail = async (email) => {
+    try {
+        const token = await generateEmailToken(email);
+        const resetUrl = `http://localhost:3000/reset-password?token=${token}`;
+        const mailOptions = {
+            from: env.emailUser,
+            to: user.email,
+            subject: 'Reset your password',
+            text: `Please reset your password by clicking on the following link: ${resetUrl}`,
+        }
+    } catch (error) {
+        console.error('Error sending password reset email:', error);
+        throw new Error('Failed to send password reset email');     
+    }
+};

@@ -38,3 +38,18 @@ export const loginUser = async ({email, password, ip}) =>{
 export const logoutuser = async (refreshToken) => {
     await Token.findByIdAndDelete({token : refreshToken, type : 'refresh'});
 };
+
+export const googleLogin = async ({googleId, name, email, avatar }) =>{
+    const user = await User.findOne({email});
+    if (!user) {
+        user = await User.create({googleId, name, email, avatar});
+    }
+    return generateTokenPair(user);
+};
+
+//Role Based Authorization
+export const authorizeRoles = (user, roles) => {
+    if (!roles.includes(user.role)) {
+      throw new Error("Access Denied: Insufficient Permissions");
+    }
+  };
