@@ -3,23 +3,25 @@ import { env } from '../config/env.js';
 import Token from '../models/token.model.js';
 import User from '../models/user.model.js';
 import crypto from 'crypto';
+import { errorLogger } from '../utils/logger.js';
 
-export const generateTokenPair = (user) =>{
+export const generateTokenPair = async (user) =>{
     const accessToken = jwt.sign({ sub :user._id, role :user.role }, env.jwtSecret, { expiresIn : '1h'});
     const refreshToken = jwt.sign({ sub :user._id }, env.jwtRefreshSecret, { expiresIn:'30d'});
 
-    Token.create({
+    await Token.create({
         user: user._id,
         token: refreshToken,
         expiresAt: Date.now() + 30 * 24 * 60 * 60 * 1000,
     }).catch((err) => {
-        console.error('Error creating token in database:', err);
+        errorLogger.error('Error creating token for user ${user._id} :', err);
+        throw new Error('Could not create token in database.');
     })
     return { accessToken, refreshToken };
 };
 
-export const verifyToken = (token, type ='access') => {
-    const secret = type === 'access' ? env.jwtSecret : env.jwtRefreshSecret;
+export const verifyToken = async (token, type ='access') => {
+    const secret = await type === 'access' ? env.jwtSecret : env.jwtRefreshSecret;
     try {
         return jwt.verify(token, secret);
     } catch (error) {
