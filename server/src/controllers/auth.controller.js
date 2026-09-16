@@ -5,7 +5,7 @@ export const register = async (req, res) =>{
     try {
         const user = await authServices.registerUser(req.body);
         const tokens = await tokenServices.generateTokenPair(user);
-        register.status(201).json({success: true, user, tokens});
+        res.status(201).json({success: true, user, tokens});
     } catch (error) {
         res.status(400).json({success: false, message : error.message});
     }
