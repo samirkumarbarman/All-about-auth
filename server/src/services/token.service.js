@@ -43,7 +43,7 @@ export const generateEmailToken = async (userId) => {
     })
     return token;
     } catch(error) {
-        console.error('Error creating email token in database:', err);
+        console.error('Error creating email token in database:', error);
         throw new Error('Could not generate email verification token.');
     }
 };
@@ -83,6 +83,6 @@ export const resetPass = async (token, newPassword) => {
 
     user.password = newPassword;
     await user.save();
-    await token.deleteOne({ token });
+    await Token.deleteOne({ token });
     return true;
 };

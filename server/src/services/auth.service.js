@@ -27,7 +27,7 @@ export const loginUser = async ({email, password, ip}) =>{
     const user = await User.findOne({email});
     if(!user) throw new Error ("Invalid credentials");
 
-    const isPasswordMatched = await User.comparePassword(password);
+    const isPasswordMatched = await user.comparePassword(password);
     if(!isPasswordMatched) throw new Error ("Invalid credentials");
     
     const tokens = await generateTokenPair(user);

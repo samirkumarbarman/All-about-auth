@@ -33,10 +33,11 @@ export const sendResetEmail = async (email) => {
         const resetUrl = `http://localhost:3000/reset-password?token=${token}`;
         const mailOptions = {
             from: env.emailUser,
-            to: user.email,
+            to: email,
             subject: 'Reset your password',
             text: `Please reset your password by clicking on the following link: ${resetUrl}`,
         }
+        await transporter.sendMail(mailOptions);
     } catch (error) {
         console.error('Error sending password reset email:', error);
         throw new Error('Failed to send password reset email');     

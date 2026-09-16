@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.post('/register',validators.registerValidator, validateRequest, authController.register, deviceController.registerDevice);
 
-router.post('/logiin', limiter, validators.loginValidator, validateRequest, authController.login);
+router.post('/login', limiter, validators.loginValidator, validateRequest, authController.login);
 
 router.post('/logout', authController.logout);
 
